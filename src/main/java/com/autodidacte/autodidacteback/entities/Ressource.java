@@ -1,0 +1,26 @@
+package com.autodidacte.autodidacteback.entities;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity @Data
+@NoArgsConstructor @AllArgsConstructor
+public class Ressource {
+    @Id
+    private String id;
+    @Column(nullable = false)
+    private String rscName;
+    @Column(length = 50, nullable = false)
+    private String rscMatricule;
+    @Column(length = 50)
+    private String rscType;
+    @Column(length = 50)
+    private String rscStatus;
+    private Long rscDuree;
+    private String rscLien;
+    private boolean rscLocal;
+    @ManyToOne
+    private Lesson lesson;
+}
