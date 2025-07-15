@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service @Transactional
 public class RessourceServiceImpl implements RessourceService {
@@ -30,23 +31,40 @@ public class RessourceServiceImpl implements RessourceService {
     }
 
     @Override
-    public Page<Ressource> findByMotCle(String motCle, int page, int size) {
-        return ressourceRepository.getByMotCle(motCle, PageRequest.of(page, size));
+    public List<Ressource> findByMotCle(String motCle) {
+        return ressourceRepository.findByRscNameContains(motCle);
     }
 
     @Override
-    public Page<Ressource> findAllRessources(int page, int size) {
-        return ressourceRepository.findAll(PageRequest.of(page, size));
+    public List<Ressource> findAllRessources() {
+        return ressourceRepository.findAll();
     }
 
     @Override
-    public Page<Ressource> findRessourceByLesson(Lesson lesson, int page, int size) {
-        return ressourceRepository.getAllByLesson(lesson, PageRequest.of(page, size));
+    public List<Ressource> findRessourceByLesson(Lesson lesson) {
+        return ressourceRepository.getAllByLesson(lesson);
     }
 
     @Override
-    public Page<Ressource> findRessourcesByCours(Cours cours, int page, int size) {
-        return ressourceRepository.getByLessonCours(cours, PageRequest.of(page, size));
+    public List<Ressource> findRessourcesByCours(Cours cours) {
+        return ressourceRepository.getByLessonCours(cours);
+    }
+
+    @Override
+    public Ressource saveRessource(Ressource ressource) {
+        ressource.setId(UUID.randomUUID().toString());
+
+        return ressourceRepository.save(ressource);
+    }
+
+    @Override
+    public Ressource updateRessource(Ressource ressource) {
+        return ressourceRepository.save(ressource);
+    }
+
+    @Override
+    public void deleteRessource(String ressourceId) {
+        ressourceRepository.delete(ressourceRepository.getById(ressourceId));
     }
 
 }

@@ -13,8 +13,10 @@ import java.util.List;
 public interface CoursService {
     Cours getCoursById(String id);
     Cours getCoursByMatricule(String matricule);
-    @Query("SELECT c FROM Cours c WHERE c.courIntitule LIKE :intitule")
-    Page<Cours> findCoursByMotCle(@Param("intitule") String motCle, int page, int size);
-    Page<Cours> findAllCours(int page, int size);
-    Page<Cours> findCoursByParcours(Parcours parcours, int page, int size);
+    List<Cours> findCoursByMotCle(String motCle);
+    List<Cours> findAllCours();
+    List<Cours> findCoursByParcours(Parcours parcours);
+    Cours saveCours(Cours cours);
+    Cours updateCours(Cours cours);
+    void deleteCours(String coursId);
 }

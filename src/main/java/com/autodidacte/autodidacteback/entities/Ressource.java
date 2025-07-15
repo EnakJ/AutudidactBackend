@@ -18,6 +18,7 @@ public class Ressource {
     private String rscType;
     @Column(length = 50)
     private String rscStatus;
+    @Column(length = 20)
     private Long rscDuree;
     private String rscLien;
     private boolean rscLocal;

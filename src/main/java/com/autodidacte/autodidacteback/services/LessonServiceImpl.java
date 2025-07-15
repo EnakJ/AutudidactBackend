@@ -1,5 +1,6 @@
 package com.autodidacte.autodidacteback.services;
 
+import com.autodidacte.autodidacteback.dtos.LessonDTO;
 import com.autodidacte.autodidacteback.entities.Cours;
 import com.autodidacte.autodidacteback.entities.Lesson;
 import com.autodidacte.autodidacteback.entities.Parcours;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service @Transactional
 public class LessonServiceImpl implements LessonService {
@@ -29,22 +31,39 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public Page<Lesson> findLessonsByMotCle(String motCle, int page, int size) {
-        return lessonRepository.findByMotCle(motCle, PageRequest.of(page, size));
+    public List<Lesson> findLessonsByMotCle(String motCle) {
+        return lessonRepository.findByLessonTitreContains(motCle);
     }
 
     @Override
-    public Page<Lesson> findAllLessons(int page, int size) {
-        return lessonRepository.findAll(PageRequest.of(page, size));
+    public List<Lesson> findAllLessons() {
+        return lessonRepository.findAll();
     }
 
     @Override
-    public Page<Lesson> findLessonsByCours(Cours cours, int page, int size) {
-        return lessonRepository.findAllByCours(cours, PageRequest.of(page, size));
+    public List<Lesson> findLessonsByCours(Cours cours) {
+        return lessonRepository.findAllByCours(cours);
     }
 
     @Override
-    public Page<Lesson> findLessonByParcours(Parcours parcours, int page, int size) {
-        return lessonRepository.findAllByCours_Parcours(parcours, PageRequest.of(page, size));
+    public List<Lesson> findLessonByParcours(Parcours parcours) {
+        return lessonRepository.findAllByCours_Parcours(parcours);
+    }
+
+    @Override
+    public Lesson saveLesson(Lesson lesson) {
+        lesson.setId(UUID.randomUUID().toString());
+
+        return lessonRepository.save(lesson);
+    }
+
+    @Override
+    public Lesson updateLesson(String lessonId, Lesson lesson) {
+        return lessonRepository.save(lesson);
+    }
+
+    @Override
+    public void deleteLesson(Lesson lesson) {
+        lessonRepository.delete(lesson);
     }
 }

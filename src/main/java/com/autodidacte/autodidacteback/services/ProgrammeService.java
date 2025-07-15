@@ -7,13 +7,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
 
 public interface ProgrammeService {
     Programme getProgramById(String id);
     Programme getProgramByMatricule(String matricule);
-    @Query("SELECT p FROM Programme p WHERE p.progIntitule LIKE :intitule")
-    Page<Programme> findProgramByMotCle(@Param("intitule") String motCle, int page, int size);
-    Page<Programme> findAllPrograms(int page, int size);
+    List<Programme> findProgramByMotCle(String motCle);
+    List<Programme> findAllPrograms();
     Programme saveProgram(Programme programme);
     Programme updateProgram(Programme programme);
     void deleteProgram(String programId);

@@ -10,13 +10,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ParcoursRepository extends JpaRepository<Parcours, String> {
-    Parcours getById(String id);
+    Optional<Parcours> findById(String id);
     Parcours findByParcMatricule(String matricule);
-    Page<Parcours> findAll(Pageable pageable);
-    @Query("SELECT p FROM Parcours p WHERE p.parcIntitule LIKE :intitule")
-    Page<Parcours> findByMotCle(@Param("intitule")String motCle, Pageable pageable);
-    Page<Parcours> findAllByProgramme(Programme programme, Pageable pageable);
+    List<Parcours> findAll();
+    List<Parcours> findByParcIntituleContains(String motCle);
+    List<Parcours> findByProgramme(Programme programme);
 }

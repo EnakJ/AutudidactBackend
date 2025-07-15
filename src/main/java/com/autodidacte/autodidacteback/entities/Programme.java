@@ -1,9 +1,6 @@
 package com.autodidacte.autodidacteback.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,6 +31,6 @@ public class Programme {
     private String progression;
     @Column(length = 50)
     private String progStatus;
-    @OneToMany(mappedBy = "programme")
+    @OneToMany(mappedBy = "programme", fetch = FetchType.EAGER)
     private List<Parcours> parcoursList;
 }

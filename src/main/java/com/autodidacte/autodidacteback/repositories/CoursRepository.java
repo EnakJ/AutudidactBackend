@@ -15,8 +15,7 @@ import java.util.List;
 public interface CoursRepository extends JpaRepository<Cours, String> {
     Cours getCoursById(String id);
     Cours getCoursByCourMatricule(String matricule);
-    Page<Cours> findAll(Pageable pageable);
-    @Query("SELECT c FROM Cours c WHERE c.courIntitule LIKE :intitule")
-    Page<Cours> findByMotCle(@Param("intitule") String motCle, Pageable pageable);
-    Page<Cours> findAllByParcours(Parcours parcours, Pageable pageable);
+    List<Cours> findAll();
+    List<Cours> findByCourIntituleContains(String intitule);
+    List<Cours> findAllByParcours(Parcours parcours);
 }

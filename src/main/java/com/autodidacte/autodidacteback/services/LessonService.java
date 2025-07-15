@@ -1,5 +1,6 @@
 package com.autodidacte.autodidacteback.services;
 
+import com.autodidacte.autodidacteback.dtos.LessonDTO;
 import com.autodidacte.autodidacteback.entities.Cours;
 import com.autodidacte.autodidacteback.entities.Lesson;
 import com.autodidacte.autodidacteback.entities.Parcours;
@@ -13,9 +14,11 @@ import java.util.List;
 public interface LessonService {
     Lesson getLessonById(String id);
     Lesson getLessonByMatricule(String matricule);
-    @Query("SELECT l FROM Lesson l WHERE l.lessonTitre LIKE :titre")
-    Page<Lesson> findLessonsByMotCle(@Param("titre") String motCle, int page, int size);
-    Page<Lesson> findAllLessons(int page, int size);
-    Page<Lesson> findLessonsByCours(Cours cours, int page, int size);
-    Page<Lesson> findLessonByParcours(Parcours parcours, int page, int size);
+    List<Lesson> findLessonsByMotCle(String motCle);
+    List<Lesson> findAllLessons();
+    List<Lesson> findLessonsByCours(Cours cours);
+    List<Lesson> findLessonByParcours(Parcours parcours);
+    Lesson saveLesson(Lesson lesson);
+    Lesson updateLesson(String lessonId, Lesson lesson);
+    void deleteLesson(Lesson lesson);
 }

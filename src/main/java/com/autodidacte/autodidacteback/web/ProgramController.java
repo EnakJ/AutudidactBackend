@@ -5,12 +5,15 @@ import com.autodidacte.autodidacteback.entities.Programme;
 import com.autodidacte.autodidacteback.mappers.DtoMapper;
 import com.autodidacte.autodidacteback.services.ProgrammeService;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin("*")
+@RequestMapping(value = "programs")
 public class ProgramController {
     private final ProgrammeService programmeService;
     private final DtoMapper dtoMapper;
@@ -20,47 +23,49 @@ public class ProgramController {
         this.dtoMapper = dtoMapper;
     }
 
-    @GetMapping("/programs")
-    public Page<Programme> getPrograms(
-            @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "5") int size
-    ){
-        return programmeService.findAllPrograms(page, size);
+    @GetMapping("")
+    public List<ProgrammeDTO> getPrograms(){
+        List<Programme> programmes = programmeService.findAllPrograms();
+        return programmes.stream().map(dtoMapper::fromProgram).toList();
     }
 
-    @GetMapping("/programs/{programId}")
-    public Programme getProgramByid(@PathVariable String programId){
-        return programmeService.getProgramById(programId);
+    @GetMapping("/{Id}")
+    public ProgrammeDTO getProgramByid(@PathVariable String Id){
+        return dtoMapper.fromProgram(programmeService.getProgramById(Id));
     }
 
-    @GetMapping("/programs/{matricule}")
-    public Programme getProgramByMatricule(@PathVariable String matricule){
-        return programmeService.getProgramByMatricule(matricule);
+    @GetMapping("/{matricule}")
+    public ProgrammeDTO getProgramByMatricule(@PathVariable String matricule){
+        return dtoMapper.fromProgram(
+                programmeService.getProgramByMatricule(matricule)
+        );
     }
 
-    @GetMapping("/programs/{motCle}/programParMotCle")
-    public Page<Programme> findProgramsByMotCle(
-            @PathVariable String motCle,
-            @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "5") int size){
+    @GetMapping("/programParMotCle/{motCle}")
+    public List<ProgrammeDTO> findProgramsByMotCle(@PathVariable String motCle){
+        List<Programme> programmes = programmeService.findProgramByMotCle(motCle);
 
-        return programmeService.findProgramByMotCle(motCle, page, size);
+        return programmes.stream().map(dtoMapper::fromProgram).toList();
     }
 
-    @PostMapping("/programs")
+    @PostMapping("/save")
     public ProgrammeDTO saveProgram(@RequestBody ProgrammeDTO programmeDTO){
+
         Programme programme = programmeService.saveProgram(dtoMapper.fromProgramDTO(programmeDTO));
+
         return dtoMapper.fromProgram(programme);
     }
 
-    @PutMapping("/programs/{programId}")
+    @PutMapping("/update/{programId}")
     public ProgrammeDTO updateProgram(@PathVariable String programId , @RequestBody ProgrammeDTO programmeDTO){
         Programme programme = dtoMapper.fromProgramDTO(programmeDTO);
         return dtoMapper.fromProgram(programmeService.updateProgram(programme));
     }
 
-    @DeleteMapping("/programs/{programId}")
-    public void deleteProgram(@PathVariable String programId){
+    @DeleteMapping("/delete/{programId}")
+    public ResponseEntity<Void> deleteProgram(@PathVariable String programId){
         programmeService.deleteProgram(programId);
+
+        return ResponseEntity.noContent().build();
     }
 }

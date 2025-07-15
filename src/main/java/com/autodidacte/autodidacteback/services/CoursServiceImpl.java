@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service @Transactional
 public class CoursServiceImpl implements CoursService {
@@ -29,17 +30,33 @@ public class CoursServiceImpl implements CoursService {
     }
 
     @Override
-    public Page<Cours> findCoursByMotCle(String motCle, int page, int size) {
-        return coursRepository.findByMotCle(motCle, PageRequest.of(page, size));
+    public List<Cours> findCoursByMotCle(String motCle) {
+        return coursRepository.findByCourIntituleContains(motCle);
     }
 
     @Override
-    public Page<Cours> findAllCours(int page, int size) {
-        return coursRepository.findAll(PageRequest.of(page, size));
+    public List<Cours> findAllCours() {
+        return coursRepository.findAll();
     }
 
     @Override
-    public Page<Cours> findCoursByParcours(Parcours parcours, int page, int size) {
-        return coursRepository.findAllByParcours(parcours, PageRequest.of(page, size));
+    public List<Cours> findCoursByParcours(Parcours parcours) {
+        return coursRepository.findAllByParcours(parcours);
+    }
+
+    @Override
+    public Cours saveCours(Cours cours) {
+        cours.setId(UUID.randomUUID().toString());
+        return coursRepository.save(cours);
+    }
+
+    @Override
+    public Cours updateCours(Cours cours) {
+        return coursRepository.save(cours);
+    }
+
+    @Override
+    public void deleteCours(String coursId) {
+        coursRepository.deleteById(coursId);
     }
 }

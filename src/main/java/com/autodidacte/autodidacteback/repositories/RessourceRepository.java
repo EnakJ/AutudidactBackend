@@ -16,10 +16,9 @@ import java.util.List;
 public interface RessourceRepository extends JpaRepository<Ressource, String> {
     Ressource getById(String id);
     Ressource getByRscMatricule(String matricule);
-    Page<Ressource> getAllByRscType(String type, Pageable pageable);
-    @Query("SELECT r FROM Ressource r WHERE r.rscName LIKE :name")
-    Page<Ressource> getByMotCle(@Param("name") String motCle, Pageable pageable);
-    Page<Ressource> getAllByLesson(Lesson lesson, Pageable pageable);
-    Page<Ressource> getByLessonCours(Cours cours, Pageable pageable);
+    List<Ressource> getAllByRscType(String type);
+    List<Ressource> findByRscNameContains(String motCle);
+    List<Ressource> getAllByLesson(Lesson lesson);
+    List<Ressource> getByLessonCours(Cours cours);
 
 }
