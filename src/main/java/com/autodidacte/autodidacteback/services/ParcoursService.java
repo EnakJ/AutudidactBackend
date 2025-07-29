@@ -1,20 +1,22 @@
 package com.autodidacte.autodidacteback.services;
 
+import com.autodidacte.autodidacteback.dtos.ParcoursFormationDTO;
 import com.autodidacte.autodidacteback.dtos.ParcoursDTO;
 import com.autodidacte.autodidacteback.entities.Parcours;
-import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
+import com.autodidacte.autodidacteback.exceptions.ParcoursNotFoundException;
+import com.autodidacte.autodidacteback.exceptions.ProgrammeNotFoundException;
 
 import java.util.List;
 
 
 public interface ParcoursService {
-    Parcours getParcoursById(String id);
-    Parcours getParcourByMatricule(String matricule);
-    List<Parcours> findAll();
-    List<Parcours> findByMotCle(String motCle);
-    List<Parcours> getParcoursByProgram(String programId);
-    Parcours saveParcours(Parcours parcours);
+    ParcoursDTO getParcoursById(String id) throws ParcoursNotFoundException;
+    ParcoursDTO getParcourByMatricule(String matricule) throws ParcoursNotFoundException;
+    List<ParcoursDTO> getAllParcours();
+    List<ParcoursFormationDTO> getParcoursFormation();
+    List<ParcoursDTO> findByMotCle(String motCle) throws ParcoursNotFoundException;
+    List<ParcoursDTO> getParcoursByProgram(String programId) throws ParcoursNotFoundException, ProgrammeNotFoundException;
+    ParcoursDTO saveParcours(Parcours parcours);
     Parcours updateParcours(Parcours parcours);
-    void deleteParcours(String parcoursId);
+    void deleteParcours(String parcoursId) throws ParcoursNotFoundException;
 }

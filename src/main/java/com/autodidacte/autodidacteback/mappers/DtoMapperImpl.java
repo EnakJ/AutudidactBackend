@@ -2,27 +2,41 @@ package com.autodidacte.autodidacteback.mappers;
 
 import com.autodidacte.autodidacteback.dtos.*;
 import com.autodidacte.autodidacteback.entities.*;
+import com.autodidacte.autodidacteback.repositories.FormationRepository;
+import com.autodidacte.autodidacteback.repositories.ParcoursRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
 
 @Service
 public class DtoMapperImpl implements DtoMapper {
 
-    @Override
-    public CoursDTO fromCours(Cours cours) {
-        CoursDTO coursDTO = new CoursDTO();
-        copyProperties(cours, coursDTO);
+    private final ParcoursRepository parcoursRepository;
+    private final FormationRepository formationRepository;
 
-        return coursDTO;
+    public DtoMapperImpl(
+            ParcoursRepository parcoursRepository,
+            FormationRepository formationRepository) {
+        this.parcoursRepository = parcoursRepository;
+        this.formationRepository = formationRepository;
     }
 
     @Override
-    public Cours fromCoursDTO(CoursDTO coursDTO) {
-        Cours cours = new Cours();
-        copyProperties(coursDTO, cours);
+    public FormationDTO fromFormation(Formation formation) {
+        FormationDTO formationDTO = new FormationDTO();
+        copyProperties(formation, formationDTO);
 
-        return cours;
+        return formationDTO;
+    }
+
+    @Override
+    public Formation fromFormationDTO(FormationDTO formationDTO) {
+        Formation formation = new Formation();
+        copyProperties(formationDTO, formation);
+
+        return formation;
     }
 
     @Override
@@ -88,4 +102,74 @@ public class DtoMapperImpl implements DtoMapper {
 
         return programme;
     }
+
+    @Override
+    public ProgramParcoursDTO toProgramParcoursDTO(Programme programme) {
+        ProgramParcoursDTO programParcoursDTO = new ProgramParcoursDTO();
+        copyProperties(programme, programParcoursDTO);
+
+        programParcoursDTO.setParcoursDTOS(
+                programme.getParcoursList().stream().map(this::fromParcours)
+                .toList()
+        );
+
+        return programParcoursDTO;
+    }
+
+    @Override
+    public ProgramParcoursDTO toProgramParcoursDTO(ProgrammeDTO programmeDTO) {
+        List<ParcoursDTO> parcoursDTOS =
+                parcoursRepository.findByProgramme(this.fromProgramDTO(programmeDTO))
+                        .stream()
+                        .map(this::fromParcours)
+                        .toList();
+
+        ProgramParcoursDTO programParcoursDTO = this.toProgramParcoursDTO(programmeDTO);
+        programParcoursDTO.setParcoursDTOS(parcoursDTOS);
+
+        return programParcoursDTO;
+    }
+
+    @Override
+    public Programme fromProgramParcoursDTO(ProgramParcoursDTO programParcoursDTO) {
+        Programme programme = new Programme();
+        copyProperties(programParcoursDTO, programme);
+
+        return programme;
+    }
+
+    @Override
+    public ParcoursFormationDTO toParcoursFormationDTO(Parcours parcours) {
+        ParcoursFormationDTO parcoursFormationDTO = new ParcoursFormationDTO();
+        copyProperties(parcours, parcoursFormationDTO);
+
+        parcoursFormationDTO.setFormationDTOS(parcours.getFormationList()
+                .stream()
+                .map(this::fromFormation).toList());
+
+
+        return parcoursFormationDTO;
+    }
+
+    @Override
+    public ParcoursFormationDTO toParcoursFormationDTO(ParcoursDTO parcoursDTO) {
+        ParcoursFormationDTO parcoursFormationDTO = new ParcoursFormationDTO();
+        List<Formation> formationList = formationRepository
+                .findAllByParcours(this.fromParcoursDTO(parcoursDTO));
+
+        copyProperties(parcoursDTO, parcoursFormationDTO);
+
+        parcoursFormationDTO.setFormationDTOS(
+                formationList.stream().map(this::fromFormation).toList()
+        );
+
+        return parcoursFormationDTO;
+    }
+
+    @Override
+    public Parcours fromParcoursFormationDTO(ParcoursFormationDTO parcoursFormationDTO) {
+        return parcoursRepository
+                .getReferenceById(parcoursFormationDTO.getParcoursId());
+    }
+
 }

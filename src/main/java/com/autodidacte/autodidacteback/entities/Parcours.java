@@ -20,6 +20,8 @@ public class Parcours {
     private String parcMatricule;
     private String parcDescription;
     private String parcObjectif;
+    @Column(length = 100)
+    private String imageUrl;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date parcDebut;
     @Column(length = 50)
@@ -29,7 +31,7 @@ public class Parcours {
     @Column(length = 50)
     private String parcCertified;
     @OneToMany(mappedBy = "parcours")
-    private List<Cours> coursList;
+    private List<Formation> formationList;
     @ManyToOne
     private Programme programme;
 }

@@ -1,22 +1,18 @@
 package com.autodidacte.autodidacteback.services;
 
-import com.autodidacte.autodidacteback.dtos.LessonDTO;
-import com.autodidacte.autodidacteback.entities.Cours;
+import com.autodidacte.autodidacteback.entities.Formation;
 import com.autodidacte.autodidacteback.entities.Lesson;
 import com.autodidacte.autodidacteback.entities.Parcours;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import com.autodidacte.autodidacteback.exceptions.LessonNotFoundException;
 
 import java.util.List;
 
 public interface LessonService {
-    Lesson getLessonById(String id);
-    Lesson getLessonByMatricule(String matricule);
+    Lesson getLessonById(String id) throws LessonNotFoundException;
+    Lesson getLessonByMatricule(String matricule) throws LessonNotFoundException;
     List<Lesson> findLessonsByMotCle(String motCle);
     List<Lesson> findAllLessons();
-    List<Lesson> findLessonsByCours(Cours cours);
+    List<Lesson> findLessonsByFormation(Formation formation) throws LessonNotFoundException;
     List<Lesson> findLessonByParcours(Parcours parcours);
     Lesson saveLesson(Lesson lesson);
     Lesson updateLesson(String lessonId, Lesson lesson);

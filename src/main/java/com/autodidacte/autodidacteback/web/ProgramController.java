@@ -1,15 +1,16 @@
 package com.autodidacte.autodidacteback.web;
 
+import com.autodidacte.autodidacteback.dtos.ProgramParcoursDTO;
 import com.autodidacte.autodidacteback.dtos.ProgrammeDTO;
 import com.autodidacte.autodidacteback.entities.Programme;
+import com.autodidacte.autodidacteback.exceptions.ProgrammeNotFoundException;
 import com.autodidacte.autodidacteback.mappers.DtoMapper;
 import com.autodidacte.autodidacteback.services.ProgrammeService;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
+
 
 @RestController
 @CrossOrigin("*")
@@ -25,45 +26,52 @@ public class ProgramController {
 
     @GetMapping("")
     public List<ProgrammeDTO> getPrograms(){
-        List<Programme> programmes = programmeService.findAllPrograms();
-        return programmes.stream().map(dtoMapper::fromProgram).toList();
+        return programmeService.findAllPrograms();
     }
 
     @GetMapping("/{Id}")
-    public ProgrammeDTO getProgramByid(@PathVariable String Id){
-        return dtoMapper.fromProgram(programmeService.getProgramById(Id));
+    public ProgrammeDTO getProgramByid(@PathVariable String Id) throws ProgrammeNotFoundException{
+        return programmeService.getProgramById(Id);
+    }
+
+    @GetMapping("/programParcoursParId/{idProgram}")
+    public ProgramParcoursDTO getProgramParcoursById(@PathVariable String idProgram) throws ProgrammeNotFoundException{
+        return programmeService.getProgramParcoursById(idProgram);
+    }
+
+    @GetMapping("/programsWithParcours")
+    public List<ProgramParcoursDTO> getProgramsParcours(){
+        return programmeService.getAllProgramsWithParcours();
     }
 
     @GetMapping("/{matricule}")
-    public ProgrammeDTO getProgramByMatricule(@PathVariable String matricule){
-        return dtoMapper.fromProgram(
-                programmeService.getProgramByMatricule(matricule)
-        );
+    public ProgrammeDTO getProgramByMatricule(@PathVariable String matricule) throws ProgrammeNotFoundException{
+        return programmeService.getProgramByMatricule(matricule);
     }
 
     @GetMapping("/programParMotCle/{motCle}")
-    public List<ProgrammeDTO> findProgramsByMotCle(@PathVariable String motCle){
-        List<Programme> programmes = programmeService.findProgramByMotCle(motCle);
+    public List<ProgramParcoursDTO> findProgramsByMotCle(@PathVariable String motCle){
+        return programmeService.findProgramByMotCle(motCle);
 
-        return programmes.stream().map(dtoMapper::fromProgram).toList();
     }
 
     @PostMapping("/save")
     public ProgrammeDTO saveProgram(@RequestBody ProgrammeDTO programmeDTO){
-
-        Programme programme = programmeService.saveProgram(dtoMapper.fromProgramDTO(programmeDTO));
-
-        return dtoMapper.fromProgram(programme);
+        return programmeService
+                .saveProgram(dtoMapper.fromProgramDTO(programmeDTO));
     }
 
     @PutMapping("/update/{programId}")
-    public ProgrammeDTO updateProgram(@PathVariable String programId , @RequestBody ProgrammeDTO programmeDTO){
-        Programme programme = dtoMapper.fromProgramDTO(programmeDTO);
-        return dtoMapper.fromProgram(programmeService.updateProgram(programme));
+    public ProgramParcoursDTO updateProgram(
+            @PathVariable String programId ,
+            @RequestBody ProgramParcoursDTO programParcoursDTO)
+    {
+        Programme programme = dtoMapper.fromProgramParcoursDTO(programParcoursDTO);
+        return programmeService.updateProgram(programme);
     }
 
     @DeleteMapping("/delete/{programId}")
-    public ResponseEntity<Void> deleteProgram(@PathVariable String programId){
+    public ResponseEntity<Void> deleteProgram(@PathVariable String programId) throws ProgrammeNotFoundException {
         programmeService.deleteProgram(programId);
 
         return ResponseEntity.noContent().build();

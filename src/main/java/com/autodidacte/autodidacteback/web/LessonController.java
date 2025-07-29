@@ -1,12 +1,13 @@
 package com.autodidacte.autodidacteback.web;
 
-import com.autodidacte.autodidacteback.dtos.CoursDTO;
+import com.autodidacte.autodidacteback.dtos.FormationDTO;
 import com.autodidacte.autodidacteback.dtos.LessonDTO;
 import com.autodidacte.autodidacteback.dtos.ParcoursDTO;
-import com.autodidacte.autodidacteback.entities.Cours;
+import com.autodidacte.autodidacteback.entities.Formation;
 import com.autodidacte.autodidacteback.entities.Lesson;
+import com.autodidacte.autodidacteback.exceptions.LessonNotFoundException;
 import com.autodidacte.autodidacteback.mappers.DtoMapper;
-import com.autodidacte.autodidacteback.services.CoursService;
+import com.autodidacte.autodidacteback.services.FormationService;
 import com.autodidacte.autodidacteback.services.LessonService;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,15 +21,15 @@ import java.util.stream.Collectors;
 public class LessonController {
     private final LessonService lessonService;
     private final DtoMapper dtoMapper;
-    private final CoursService coursService;
+    private final FormationService formationService;
 
     public LessonController(LessonService lessonService,
-                            CoursService coursService,
+                            FormationService formationService,
                             DtoMapper dtoMapper)
     {
         this.lessonService = lessonService;
         this.dtoMapper = dtoMapper;
-        this.coursService = coursService;
+        this.formationService = formationService;
     }
 
     @GetMapping("")
@@ -39,13 +40,13 @@ public class LessonController {
     }
 
     @GetMapping("/{lessonId}")
-    public LessonDTO getLessonById(@PathVariable String lessonId){
+    public LessonDTO getLessonById(@PathVariable String lessonId) throws LessonNotFoundException {
         return dtoMapper
                 .fromLesson(lessonService.getLessonById(lessonId));
     }
 
     @GetMapping("/{matricule}")
-    public LessonDTO getLessonByMatricule(@PathVariable String matricule){
+    public LessonDTO getLessonByMatricule(@PathVariable String matricule) throws LessonNotFoundException{
         return dtoMapper
                 .fromLesson(lessonService.getLessonByMatricule(matricule));
     }
@@ -57,26 +58,26 @@ public class LessonController {
         return lessons.stream().map(dtoMapper::fromLesson).toList();
     }
 
-    @GetMapping("/{coursId}")
-    public List<LessonDTO> getLessonByCours(
-            @PathVariable String coursId,
-            @RequestBody CoursDTO coursDTO){
+    @GetMapping("/{formationId}")
+    public List<LessonDTO> getLessonByFormation(
+            @PathVariable String formationId,
+            @RequestBody FormationDTO formationDTO) throws LessonNotFoundException{
 
         List<Lesson> lessons = lessonService.
-                findLessonsByCours(dtoMapper.fromCoursDTO(coursDTO));
+                findLessonsByFormation(dtoMapper.fromFormationDTO(formationDTO));
 
         return lessons.stream().map(dtoMapper::fromLesson).toList();
     }
 
     @GetMapping("/lessonsByParcours")
     public List<LessonDTO> getLessonByParcours(@RequestBody ParcoursDTO parcoursDTO){
-        List<Cours> coursList = coursService
-                .findCoursByParcours(dtoMapper.fromParcoursDTO(parcoursDTO));
+        List<Formation> formationList = formationService
+                .findFormationByParcours(dtoMapper.fromParcoursDTO(parcoursDTO));
         List<Lesson> lessonList = new ArrayList<>();
 
-        List<Lesson> collect = coursList.stream().flatMap(cours -> cours.getLessons().stream())
+        List<Lesson> collect = formationList.stream().flatMap(cours -> cours.getLessons().stream())
                 .distinct()
-                .collect(Collectors.toList());
+                .toList();
 
         return collect.stream().map(dtoMapper::fromLesson).toList();
     }
@@ -96,7 +97,7 @@ public class LessonController {
     }
 
     @DeleteMapping("/deleteLesson/{lessonId}")
-    public void deleteLesson(@PathVariable String lessonId){
+    public void deleteLesson(@PathVariable String lessonId) throws LessonNotFoundException{
         Lesson lesson = lessonService.getLessonById(lessonId);
 
         lessonService.deleteLesson(lesson);

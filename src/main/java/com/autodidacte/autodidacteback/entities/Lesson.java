@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Collection;
 import java.util.List;
 
 @Entity @Data
@@ -25,5 +24,5 @@ public class Lesson {
     @OneToMany(mappedBy = "lesson")
     private List<Ressource> ressources;
     @ManyToOne
-    private Cours cours;
+    private Formation formation;
 }

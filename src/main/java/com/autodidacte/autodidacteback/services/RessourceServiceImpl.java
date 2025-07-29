@@ -1,14 +1,12 @@
 package com.autodidacte.autodidacteback.services;
 
-import com.autodidacte.autodidacteback.entities.Cours;
+import com.autodidacte.autodidacteback.entities.Formation;
 import com.autodidacte.autodidacteback.entities.Lesson;
-import com.autodidacte.autodidacteback.entities.Parcours;
 import com.autodidacte.autodidacteback.entities.Ressource;
+import com.autodidacte.autodidacteback.exceptions.LessonNotFoundException;
+import com.autodidacte.autodidacteback.exceptions.RessourceNotFoundException;
 import com.autodidacte.autodidacteback.repositories.RessourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,17 +19,17 @@ public class RessourceServiceImpl implements RessourceService {
     private RessourceRepository ressourceRepository;
 
     @Override
-    public Ressource getRessourceById(String id) {
+    public Ressource getRessourceById(String id) throws RessourceNotFoundException {
         return ressourceRepository.getById(id);
     }
 
     @Override
-    public Ressource getRessourceByMatricule(String matricule) {
+    public Ressource getRessourceByMatricule(String matricule) throws RessourceNotFoundException {
         return ressourceRepository.getByRscMatricule(matricule);
     }
 
     @Override
-    public List<Ressource> findByMotCle(String motCle) {
+    public List<Ressource> findByMotCle(String motCle) throws RessourceNotFoundException {
         return ressourceRepository.findByRscNameContains(motCle);
     }
 
@@ -41,13 +39,13 @@ public class RessourceServiceImpl implements RessourceService {
     }
 
     @Override
-    public List<Ressource> findRessourceByLesson(Lesson lesson) {
+    public List<Ressource> findRessourceByLesson(Lesson lesson) throws LessonNotFoundException {
         return ressourceRepository.getAllByLesson(lesson);
     }
 
     @Override
-    public List<Ressource> findRessourcesByCours(Cours cours) {
-        return ressourceRepository.getByLessonCours(cours);
+    public List<Ressource> findRessourcesByFormation(Formation formation) {
+        return ressourceRepository.getByLessonFormation(formation);
     }
 
     @Override
@@ -63,7 +61,7 @@ public class RessourceServiceImpl implements RessourceService {
     }
 
     @Override
-    public void deleteRessource(String ressourceId) {
+    public void deleteRessource(String ressourceId) throws RessourceNotFoundException {
         ressourceRepository.delete(ressourceRepository.getById(ressourceId));
     }
 

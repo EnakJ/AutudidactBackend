@@ -1,10 +1,8 @@
 package com.autodidacte.autodidacteback.repositories;
 
-import com.autodidacte.autodidacteback.entities.Cours;
+import com.autodidacte.autodidacteback.entities.Formation;
 import com.autodidacte.autodidacteback.entities.Lesson;
 import com.autodidacte.autodidacteback.entities.Parcours;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,6 +15,6 @@ public interface LessonRepository extends JpaRepository<Lesson, String> {
     List<Lesson> findAll();
     List<Lesson> findByLessonTitreContains(String titre);
     Lesson getByLessonMatricule(String matricule);
-    List<Lesson> findAllByCours(Cours cours);
-    List<Lesson> findAllByCours_Parcours(Parcours parcours);
+    List<Lesson> findAllByFormation(Formation formation);
+    List<Lesson> findAllByFormation_Parcours(Parcours parcours);
 }

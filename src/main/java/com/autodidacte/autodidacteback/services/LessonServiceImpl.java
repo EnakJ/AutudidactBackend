@@ -1,15 +1,11 @@
 package com.autodidacte.autodidacteback.services;
 
-import com.autodidacte.autodidacteback.dtos.LessonDTO;
-import com.autodidacte.autodidacteback.entities.Cours;
+import com.autodidacte.autodidacteback.entities.Formation;
 import com.autodidacte.autodidacteback.entities.Lesson;
 import com.autodidacte.autodidacteback.entities.Parcours;
-import com.autodidacte.autodidacteback.repositories.CoursRepository;
+import com.autodidacte.autodidacteback.exceptions.LessonNotFoundException;
 import com.autodidacte.autodidacteback.repositories.LessonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +17,12 @@ public class LessonServiceImpl implements LessonService {
     @Autowired
     private LessonRepository lessonRepository;
     @Override
-    public Lesson getLessonById(String id) {
+    public Lesson getLessonById(String id) throws LessonNotFoundException {
         return lessonRepository.getById(id);
     }
 
     @Override
-    public Lesson getLessonByMatricule(String matricule) {
+    public Lesson getLessonByMatricule(String matricule) throws LessonNotFoundException {
         return lessonRepository.getByLessonMatricule(matricule);
     }
 
@@ -41,13 +37,13 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public List<Lesson> findLessonsByCours(Cours cours) {
-        return lessonRepository.findAllByCours(cours);
+    public List<Lesson> findLessonsByFormation(Formation formation) throws LessonNotFoundException {
+        return lessonRepository.findAllByFormation(formation);
     }
 
     @Override
     public List<Lesson> findLessonByParcours(Parcours parcours) {
-        return lessonRepository.findAllByCours_Parcours(parcours);
+        return lessonRepository.findAllByFormation_Parcours(parcours);
     }
 
     @Override

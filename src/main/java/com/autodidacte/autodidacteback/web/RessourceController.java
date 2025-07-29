@@ -1,14 +1,15 @@
 package com.autodidacte.autodidacteback.web;
 
-import com.autodidacte.autodidacteback.dtos.CoursDTO;
+import com.autodidacte.autodidacteback.dtos.FormationDTO;
 import com.autodidacte.autodidacteback.dtos.LessonDTO;
 import com.autodidacte.autodidacteback.dtos.RessourceDTO;
 import com.autodidacte.autodidacteback.entities.Lesson;
 import com.autodidacte.autodidacteback.entities.Ressource;
+import com.autodidacte.autodidacteback.exceptions.LessonNotFoundException;
+import com.autodidacte.autodidacteback.exceptions.RessourceNotFoundException;
 import com.autodidacte.autodidacteback.mappers.DtoMapper;
 import com.autodidacte.autodidacteback.services.LessonService;
 import com.autodidacte.autodidacteback.services.RessourceService;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,14 +40,14 @@ public class RessourceController {
     }
 
     @GetMapping("/{ressourceId}")
-    public RessourceDTO getRessourceById(@PathVariable String ressourceId){
+    public RessourceDTO getRessourceById(@PathVariable String ressourceId) throws RessourceNotFoundException {
         Ressource ressource = ressourceService.getRessourceById(ressourceId);
 
         return dtoMapper.fromRessource(ressource);
     }
 
     @GetMapping("/ressourcceParMatricule/{matricule}")
-    public RessourceDTO getRessourceByMatricule(@PathVariable String matricule){
+    public RessourceDTO getRessourceByMatricule(@PathVariable String matricule) throws RessourceNotFoundException{
         Ressource ressource = ressourceService.getRessourceByMatricule(matricule);
 
         return dtoMapper.fromRessource(ressource);
@@ -54,7 +55,7 @@ public class RessourceController {
 
     @GetMapping("/ressourcesParLesson/{lessonId}")
     public List<RessourceDTO> getRessourceByLesson(@PathVariable String lessonId,
-                                                   @RequestBody LessonDTO lessonDTO)
+                                                   @RequestBody LessonDTO lessonDTO) throws LessonNotFoundException
     {
         List<Ressource> ressources = ressourceService
                 .findRessourceByLesson(dtoMapper.fromLessonDTO(lessonDTO));
@@ -62,20 +63,20 @@ public class RessourceController {
         return ressources.stream().map(dtoMapper::fromRessource).toList();
     }
 
-    @GetMapping("/ressourcesParCours/{coursId}")
-    public List<RessourceDTO> getRessourceByCours(@PathVariable String coursId, CoursDTO coursDTO){
-        List<Lesson> lessonByCours = dtoMapper.fromCoursDTO(coursDTO).getLessons();
+    @GetMapping("/ressourcesParFormation/{formationId}")
+    public List<RessourceDTO> getRessourceByFormation(@PathVariable String formationId, FormationDTO formationDTO){
+        List<Lesson> lessonByFormation = dtoMapper.fromFormationDTO(formationDTO).getLessons();
 
-        List<Ressource> ressources = lessonByCours.stream()
+        List<Ressource> ressources = lessonByFormation.stream()
                 .flatMap(lesson -> lesson.getRessources().stream())
                 .distinct()
-                .collect(Collectors.toList());
+                .toList();
 
         return ressources.stream().map(dtoMapper::fromRessource).toList();
     }
 
     @GetMapping("/ressourceParMotCle/{motCle}")
-    public List<RessourceDTO> getRessourceByMotCle(@PathVariable String motCle){
+    public List<RessourceDTO> getRessourceByMotCle(@PathVariable String motCle) throws RessourceNotFoundException{
         List<Ressource> ressources = ressourceService.findByMotCle(motCle);
 
         return ressources.stream().map(dtoMapper::fromRessource).toList();
@@ -98,7 +99,7 @@ public class RessourceController {
     }
 
     @DeleteMapping("/deleteRessource/{ressourceId}")
-    public void deleteRessource(@PathVariable String ressourceId){
+    public void deleteRessource(@PathVariable String ressourceId) throws RessourceNotFoundException{
 
         ressourceService.deleteRessource(ressourceId);
     }

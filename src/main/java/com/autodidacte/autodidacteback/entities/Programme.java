@@ -20,6 +20,8 @@ public class Programme {
     private String progIntitule;
     private String progDescription;
     private String progObjectif;
+    @Column(length = 100)
+    private String imageUrl;
     @Column(length = 50)
     private String progCertified;
     @DateTimeFormat(pattern = "yyyy-MM-dd")

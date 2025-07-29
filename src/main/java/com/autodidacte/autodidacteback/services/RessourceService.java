@@ -1,24 +1,22 @@
 package com.autodidacte.autodidacteback.services;
 
-import com.autodidacte.autodidacteback.dtos.RessourceDTO;
-import com.autodidacte.autodidacteback.entities.Cours;
+import com.autodidacte.autodidacteback.entities.Formation;
 import com.autodidacte.autodidacteback.entities.Lesson;
-import com.autodidacte.autodidacteback.entities.Parcours;
 import com.autodidacte.autodidacteback.entities.Ressource;
-import jakarta.annotation.Resource;
-import org.springframework.data.domain.Page;
+import com.autodidacte.autodidacteback.exceptions.LessonNotFoundException;
+import com.autodidacte.autodidacteback.exceptions.RessourceNotFoundException;
 
 import java.util.List;
 
 
 public interface RessourceService {
-    Ressource getRessourceById(String id);
-    Ressource getRessourceByMatricule(String matricule);
-    List<Ressource> findByMotCle(String motCle);
+    Ressource getRessourceById(String id) throws RessourceNotFoundException;
+    Ressource getRessourceByMatricule(String matricule) throws RessourceNotFoundException;
+    List<Ressource> findByMotCle(String motCle) throws RessourceNotFoundException;
     List<Ressource> findAllRessources();
-    List<Ressource> findRessourceByLesson(Lesson lesson);
-    List<Ressource> findRessourcesByCours(Cours cours);
+    List<Ressource> findRessourceByLesson(Lesson lesson) throws LessonNotFoundException;
+    List<Ressource> findRessourcesByFormation(Formation formation);
     Ressource saveRessource(Ressource ressource);
     Ressource updateRessource(Ressource ressource);
-    void deleteRessource(String ressourceId);
+    void deleteRessource(String ressourceId) throws RessourceNotFoundException;
 }

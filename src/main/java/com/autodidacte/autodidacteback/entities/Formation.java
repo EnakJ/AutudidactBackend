@@ -9,25 +9,23 @@ import java.util.List;
 
 @Entity @Data
 @NoArgsConstructor @AllArgsConstructor
-public class Cours {
+public class Formation {
     @Id
     private String id;
     @Column(nullable = false, length = 150)
-    private String courIntitule;
+    private String formIntitule;
     @Column(nullable = false, length = 50)
-    private String courMatricule;
+    private String formMatricule;
     @Column(length = 50)
-    private Long courDuree;
+    private Long formDuree;
     @Column(length = 100)
-    private String courCategorie;
+    private String formCategorie;
     @Column(length = 50)
-    private String courStatus;
+    private String formStatus;
     @Column(length = 50)
-    private String courEtat;
-    private String courDescription;
-    @Column(length = 20)
-    private boolean courOptional;
-    @OneToMany(mappedBy = "cours")
+    private String formEtat;
+    private String formDescription;
+    @OneToMany(mappedBy = "formation")
     private List<Lesson> lessons;
     @ManyToOne(fetch = FetchType.EAGER)
     private Parcours parcours;
