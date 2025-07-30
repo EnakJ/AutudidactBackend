@@ -21,11 +21,19 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service @Transactional
 public class ProgrammeServiceImpl implements ProgrammeService {
-    @Autowired
-    private DtoMapper dtoMapper;
+    private final DtoMapper dtoMapper;
+    private final MatCounterService matCounterService;
+    private final ProgrammeRepository programmeRepository;
 
-    @Autowired
-    private ProgrammeRepository programmeRepository;
+    public ProgrammeServiceImpl(
+            DtoMapper dtoMapper,
+            MatCounterService matCounterService,
+            ProgrammeRepository programmeRepository) {
+        this.dtoMapper = dtoMapper;
+        this.matCounterService = matCounterService;
+        this.programmeRepository = programmeRepository;
+    }
+
     @Override
     public ProgrammeDTO getProgramById(String idProgram) throws ProgrammeNotFoundException {
         return dtoMapper.fromProgram(programmeRepository.findById(idProgram).orElseThrow());
@@ -83,7 +91,7 @@ public class ProgrammeServiceImpl implements ProgrammeService {
     public ProgrammeDTO saveProgram(Programme programme) {
         log.info("Saving programme...");
         programme.setId(UUID.randomUUID().toString());
-
+        programme.setProgMatricule(matCounterService.generateMatricule("PRG"));
         return dtoMapper
                 .fromProgram(programmeRepository.save(programme));
     }

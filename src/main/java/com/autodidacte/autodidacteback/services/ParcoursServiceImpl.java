@@ -24,15 +24,17 @@ public class ParcoursServiceImpl implements ParcoursService {
 
     private final ParcoursRepository parcoursRepository;
     private final ProgrammeRepository programmeRepository;
+    private final MatCounterService matCounterService;
     private final DtoMapper dtoMapper;
 
     public ParcoursServiceImpl(
             ParcoursRepository parcoursRepository,
             ProgrammeRepository programmeRepository,
-            DtoMapper dtoMapper)
+            MatCounterService matCounterService, DtoMapper dtoMapper)
     {
         this.parcoursRepository = parcoursRepository;
         this.programmeRepository = programmeRepository;
+        this.matCounterService = matCounterService;
         this.dtoMapper = dtoMapper;
     }
 
@@ -90,6 +92,7 @@ public class ParcoursServiceImpl implements ParcoursService {
     public ParcoursDTO saveParcours(Parcours parcours) {
         log.info("Saving parcours...");
         parcours.setId(UUID.randomUUID().toString());
+        parcours.setParcMatricule(matCounterService.generateMatricule("PRC"));
         return dtoMapper.fromParcours(parcoursRepository.save(parcours));
     }
 

@@ -5,7 +5,6 @@ import com.autodidacte.autodidacteback.entities.Lesson;
 import com.autodidacte.autodidacteback.entities.Parcours;
 import com.autodidacte.autodidacteback.exceptions.LessonNotFoundException;
 import com.autodidacte.autodidacteback.repositories.LessonRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,8 +13,16 @@ import java.util.UUID;
 
 @Service @Transactional
 public class LessonServiceImpl implements LessonService {
-    @Autowired
-    private LessonRepository lessonRepository;
+    private final LessonRepository lessonRepository;
+    private final MatCounterService matCounterService;
+
+    public LessonServiceImpl(
+            LessonRepository lessonRepository,
+            MatCounterService matCounterService) {
+        this.lessonRepository = lessonRepository;
+        this.matCounterService = matCounterService;
+    }
+
     @Override
     public Lesson getLessonById(String id) throws LessonNotFoundException {
         return lessonRepository.getById(id);
@@ -49,7 +56,7 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public Lesson saveLesson(Lesson lesson) {
         lesson.setId(UUID.randomUUID().toString());
-
+        lesson.setLessonMatricule(matCounterService.generateMatricule("LES"));
         return lessonRepository.save(lesson);
     }
 

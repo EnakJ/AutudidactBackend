@@ -13,8 +13,14 @@ import java.util.UUID;
 
 @Service @Transactional
 public class FormationServiceImpl implements FormationService {
-    @Autowired
-    private FormationRepository formationRepository;
+    private final FormationRepository formationRepository;
+    private final MatCounterService matCounterService;
+
+    public FormationServiceImpl(FormationRepository formationRepository, MatCounterService matCounterService) {
+        this.formationRepository = formationRepository;
+        this.matCounterService = matCounterService;
+    }
+
     @Override
     public Formation getFormationById(String id) throws FormationNotFoundExeption {
         return formationRepository.getFormationById(id);
@@ -43,6 +49,7 @@ public class FormationServiceImpl implements FormationService {
     @Override
     public Formation saveFormation(Formation formation) {
         formation.setId(UUID.randomUUID().toString());
+        formation.setFormMatricule(matCounterService.generateMatricule("FRM"));
         return formationRepository.save(formation);
     }
 
@@ -55,4 +62,5 @@ public class FormationServiceImpl implements FormationService {
     public void deleteFormation(String formationId) throws FormationNotFoundExeption {
         formationRepository.deleteById(formationId);
     }
+
 }

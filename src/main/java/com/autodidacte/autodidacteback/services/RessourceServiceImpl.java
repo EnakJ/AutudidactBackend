@@ -6,7 +6,6 @@ import com.autodidacte.autodidacteback.entities.Ressource;
 import com.autodidacte.autodidacteback.exceptions.LessonNotFoundException;
 import com.autodidacte.autodidacteback.exceptions.RessourceNotFoundException;
 import com.autodidacte.autodidacteback.repositories.RessourceRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,8 +14,13 @@ import java.util.UUID;
 
 @Service @Transactional
 public class RessourceServiceImpl implements RessourceService {
-    @Autowired
-    private RessourceRepository ressourceRepository;
+    private final RessourceRepository ressourceRepository;
+    private final MatCounterService matCounterService;
+
+    public RessourceServiceImpl(RessourceRepository ressourceRepository, MatCounterService matCounterService) {
+        this.ressourceRepository = ressourceRepository;
+        this.matCounterService = matCounterService;
+    }
 
     @Override
     public Ressource getRessourceById(String id) throws RessourceNotFoundException {
@@ -51,7 +55,7 @@ public class RessourceServiceImpl implements RessourceService {
     @Override
     public Ressource saveRessource(Ressource ressource) {
         ressource.setId(UUID.randomUUID().toString());
-
+        ressource.setRscMatricule(matCounterService.generateMatricule("RSC"));
         return ressourceRepository.save(ressource);
     }
 
