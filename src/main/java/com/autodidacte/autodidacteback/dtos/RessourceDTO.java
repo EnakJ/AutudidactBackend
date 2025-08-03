@@ -9,5 +9,4 @@ public class RessourceDTO {
     private String rscStatus;
     private String rscDuree;
     private String rscLien;
-    private String rscLocal;
 }

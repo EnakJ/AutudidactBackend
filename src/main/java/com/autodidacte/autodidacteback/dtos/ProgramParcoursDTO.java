@@ -7,6 +7,7 @@ import java.util.List;
 
 @Data
 public class ProgramParcoursDTO {
+    private String progId;
     private String progMatricule;
     private String progIntitule;
     private String progDescription;

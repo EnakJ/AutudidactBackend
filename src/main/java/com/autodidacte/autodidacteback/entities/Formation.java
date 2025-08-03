@@ -22,6 +22,7 @@ public class Formation {
     private String formCategorie;
     @Column(length = 50)
     private String formStatus;
+    private String imageUrl;
     @Column(length = 50)
     private String formEtat;
     private String formDescription;

@@ -10,6 +10,7 @@ public class FormationDTO {
     private Long formDuree;
     private String formCategorie;
     private String formStatus;
+    private String imageUrl;
     private String formEtat;
     private String formDescription;
     private String formType;

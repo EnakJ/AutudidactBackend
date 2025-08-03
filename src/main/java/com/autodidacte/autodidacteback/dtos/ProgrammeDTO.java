@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class ProgrammeDTO {
+    private String progId;
     private String progMatricule;
     private String progIntitule;
     private String progDescription;

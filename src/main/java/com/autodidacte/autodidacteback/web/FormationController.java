@@ -8,8 +8,13 @@ import com.autodidacte.autodidacteback.exceptions.ParcoursNotFoundException;
 import com.autodidacte.autodidacteback.mappers.DtoMapper;
 import com.autodidacte.autodidacteback.services.FormationService;
 import com.autodidacte.autodidacteback.services.ParcoursService;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -19,6 +24,8 @@ public class FormationController {
     private final FormationService formationService;
     private final DtoMapper dtoMapper;
     private final ParcoursService parcoursService;
+    @Value("${imgFormationCover}")
+    private String imageFormationPath;
 
 
     public FormationController(
@@ -72,8 +79,14 @@ public class FormationController {
         ).toList();
     }
 
-    @PostMapping("/save")
-    public FormationDTO saveFormation(@RequestBody FormationDTO formationDTO){
+    @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public FormationDTO saveFormation(
+            @RequestBody FormationDTO formationDTO,
+            @RequestParam("picture") MultipartFile image) throws IOException {
+        if(!image.isEmpty()){
+            formationDTO.setImageUrl(image.getOriginalFilename());
+            image.transferTo(new File(imageFormationPath + "" + formationDTO.getImageUrl()));
+        }
         Formation formation = dtoMapper.fromFormationDTO(formationDTO);
         Formation formation1 = formationService.saveFormation(formation);
 

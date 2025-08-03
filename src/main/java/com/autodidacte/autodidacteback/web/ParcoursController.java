@@ -8,9 +8,13 @@ import com.autodidacte.autodidacteback.exceptions.ProgrammeNotFoundException;
 import com.autodidacte.autodidacteback.mappers.DtoMapper;
 import com.autodidacte.autodidacteback.services.ParcoursService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -52,9 +56,15 @@ public class ParcoursController {
         return parcoursService.getParcoursByProgram(programId);
     }
 
-    @PostMapping("/save")
-    public ParcoursDTO saveParcours(@RequestBody ParcoursDTO parcoursDTO){
+    @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ParcoursDTO saveParcours(
+            @RequestBody ParcoursDTO parcoursDTO,
+            @RequestParam("picture") MultipartFile image) throws IOException {
         Parcours parcours = dtoMapper.fromParcoursDTO(parcoursDTO);
+        if(!image.isEmpty()){
+            parcoursDTO.setImageUrl(image.getOriginalFilename());
+            image.transferTo(new File(imageUrlParcoursPath + "" + parcoursDTO.getImageUrl()));
+        }
 
         return parcoursService.saveParcours(parcours);
     }
