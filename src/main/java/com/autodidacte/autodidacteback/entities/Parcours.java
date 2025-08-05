@@ -13,10 +13,10 @@ import java.util.List;
 @NoArgsConstructor @AllArgsConstructor
 public class Parcours {
     @Id
-    private String id;
-    @Column(length = 150, nullable = false)
+    private String parcId;
+    @Column(length = 150, unique = true, nullable = false)
     private String parcIntitule;
-    @Column(length = 50, nullable = false)
+    @Column(length = 50, unique = true, nullable = false)
     private String parcMatricule;
     private String parcDescription;
     private String parcObjectif;

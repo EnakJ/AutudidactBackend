@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface RessourceRepository extends JpaRepository<Ressource, String> {
-    Ressource getById(String id);
+    Ressource getByRscId(String id);
     Ressource getByRscMatricule(String matricule);
     List<Ressource> getAllByRscType(String type);
     List<Ressource> findByRscNameContains(String motCle);

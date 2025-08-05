@@ -6,9 +6,12 @@ import com.autodidacte.autodidacteback.entities.Programme;
 import com.autodidacte.autodidacteback.exceptions.ProgrammeNotFoundException;
 import com.autodidacte.autodidacteback.mappers.DtoMapper;
 import com.autodidacte.autodidacteback.services.ProgrammeService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 
@@ -76,4 +79,5 @@ public class ProgramController {
 
         return ResponseEntity.noContent().build();
     }
+
 }

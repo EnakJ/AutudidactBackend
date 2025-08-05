@@ -54,7 +54,7 @@ public class RessourceServiceImpl implements RessourceService {
 
     @Override
     public Ressource saveRessource(Ressource ressource) {
-        ressource.setId(UUID.randomUUID().toString());
+        ressource.setRscId(UUID.randomUUID().toString());
         ressource.setRscMatricule(matCounterService.generateMatricule("RSC"));
         return ressourceRepository.save(ressource);
     }
@@ -66,7 +66,7 @@ public class RessourceServiceImpl implements RessourceService {
 
     @Override
     public void deleteRessource(String ressourceId) throws RessourceNotFoundException {
-        ressourceRepository.delete(ressourceRepository.getById(ressourceId));
+        ressourceRepository.delete(ressourceRepository.getByRscId(ressourceId));
     }
 
 }

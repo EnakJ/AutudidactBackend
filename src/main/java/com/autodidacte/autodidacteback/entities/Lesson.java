@@ -11,10 +11,10 @@ import java.util.List;
 @NoArgsConstructor @AllArgsConstructor
 public class Lesson {
     @Id
-    private String id;
+    private String lessonId;
     @Column(length = 150, nullable = false)
     private String lessonTitre;
-    @Column(length = 50, nullable = false)
+    @Column(length = 50, unique = true, nullable = false)
     private String lessonMatricule;
     private Long lessonDuree;
     @Column(length = 50)

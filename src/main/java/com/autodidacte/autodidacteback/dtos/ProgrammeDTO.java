@@ -2,6 +2,8 @@ package com.autodidacte.autodidacteback.dtos;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class ProgrammeDTO {
     private String progId;
@@ -9,8 +11,9 @@ public class ProgrammeDTO {
     private String progIntitule;
     private String progDescription;
     private String progObjectif;
+    private String imageUrl;
     private String progCertified;
-    private String progDebut;
+    private Date progDebut;
     private String progEtat;
     private String progression;
     private String progStatus;

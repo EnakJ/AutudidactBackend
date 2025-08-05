@@ -169,7 +169,7 @@ public class DtoMapperImpl implements DtoMapper {
     @Override
     public Parcours fromParcoursFormationDTO(ParcoursFormationDTO parcoursFormationDTO) {
         return parcoursRepository
-                .getReferenceById(parcoursFormationDTO.getParcoursId());
+                .getReferenceById(parcoursFormationDTO.getParcId());
     }
 
 }

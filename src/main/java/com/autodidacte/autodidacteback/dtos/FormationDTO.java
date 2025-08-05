@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class FormationDTO {
-    private String id;
+    private String formId;
     private String formIntitule;
     private String formMatricule;
     private Long formDuree;

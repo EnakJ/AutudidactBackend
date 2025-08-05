@@ -91,7 +91,7 @@ public class ParcoursServiceImpl implements ParcoursService {
     @Override
     public ParcoursDTO saveParcours(Parcours parcours) {
         log.info("Saving parcours...");
-        parcours.setId(UUID.randomUUID().toString());
+        parcours.setParcId(UUID.randomUUID().toString());
         parcours.setParcMatricule(matCounterService.generateMatricule("PRC"));
         return dtoMapper.fromParcours(parcoursRepository.save(parcours));
     }

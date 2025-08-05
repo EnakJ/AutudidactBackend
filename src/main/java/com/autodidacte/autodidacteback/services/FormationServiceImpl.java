@@ -23,7 +23,7 @@ public class FormationServiceImpl implements FormationService {
 
     @Override
     public Formation getFormationById(String id) throws FormationNotFoundExeption {
-        return formationRepository.getFormationById(id);
+        return formationRepository.getFormationByFormId(id);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class FormationServiceImpl implements FormationService {
 
     @Override
     public Formation saveFormation(Formation formation) {
-        formation.setId(UUID.randomUUID().toString());
+        formation.setFormId(UUID.randomUUID().toString());
         formation.setFormMatricule(matCounterService.generateMatricule("FRM"));
         return formationRepository.save(formation);
     }

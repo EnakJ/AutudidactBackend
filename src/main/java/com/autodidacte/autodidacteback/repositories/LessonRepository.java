@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface LessonRepository extends JpaRepository<Lesson, String> {
-    Lesson getById(String id);
+    Lesson getByLessonId(String id);
     List<Lesson> findAll();
     List<Lesson> findByLessonTitreContains(String titre);
     Lesson getByLessonMatricule(String matricule);

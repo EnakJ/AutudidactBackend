@@ -25,7 +25,7 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     public Lesson getLessonById(String id) throws LessonNotFoundException {
-        return lessonRepository.getById(id);
+        return lessonRepository.getByLessonId(id);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     public Lesson saveLesson(Lesson lesson) {
-        lesson.setId(UUID.randomUUID().toString());
+        lesson.setLessonId(UUID.randomUUID().toString());
         lesson.setLessonMatricule(matCounterService.generateMatricule("LES"));
         return lessonRepository.save(lesson);
     }

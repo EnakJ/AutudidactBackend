@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Repository
 public interface ParcoursRepository extends JpaRepository<Parcours, String> {
-    Optional<Parcours> findById(String id);
+    Optional<Parcours> findByParcId(String id);
     Parcours findByParcMatricule(String matricule);
     List<Parcours> findAll();
     List<Parcours> findByParcIntituleContains(String motCle);

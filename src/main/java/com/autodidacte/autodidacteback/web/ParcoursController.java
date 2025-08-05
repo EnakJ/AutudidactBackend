@@ -2,6 +2,7 @@ package com.autodidacte.autodidacteback.web;
 
 import com.autodidacte.autodidacteback.dtos.ParcoursFormationDTO;
 import com.autodidacte.autodidacteback.dtos.ParcoursDTO;
+import com.autodidacte.autodidacteback.dtos.ProgrammeDTO;
 import com.autodidacte.autodidacteback.entities.Parcours;
 import com.autodidacte.autodidacteback.exceptions.ParcoursNotFoundException;
 import com.autodidacte.autodidacteback.exceptions.ProgrammeNotFoundException;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 
 @RestController
@@ -36,22 +38,23 @@ public class ParcoursController {
         return parcoursService.getAllParcours();
     }
 
+    @GetMapping("/parcoursWithFormations")
     public List<ParcoursFormationDTO> getParcoursFormationDTOs(){
         return parcoursService.getParcoursFormation();
     }
 
-    @GetMapping("/parcoursParId/{parcoursId}")
+    @GetMapping("/{parcoursId}/parcour")
     public ParcoursDTO getParcoursById(@PathVariable String parcoursId) throws ParcoursNotFoundException{
         return parcoursService.getParcoursById(parcoursId);
     }
 
-    @GetMapping("/{motCle}")
+    @GetMapping("/{motCle}/parcour")
     public List<ParcoursDTO> getParcoursByMotCle(@PathVariable String motCle) throws ParcoursNotFoundException{
         return parcoursService.findByMotCle(motCle);
 
     }
 
-    @GetMapping("programId/{programId}")
+    @GetMapping("programId/{programId}/parcours")
     public List<ParcoursDTO> getParcoursByProgram(@PathVariable String programId) throws ParcoursNotFoundException, ProgrammeNotFoundException {
         return parcoursService.getParcoursByProgram(programId);
     }
@@ -85,6 +88,26 @@ public class ParcoursController {
         parcoursService.deleteParcours(parcoursId);
 
         return ResponseEntity.noContent().build();
+    }
+
+
+    @GetMapping(value = "/{parcoursId}/image")
+    public ResponseEntity<byte[]> getParcoursImage(@PathVariable String parcoursId) throws ParcoursNotFoundException, IOException {
+        ParcoursDTO parcours = parcoursService.getParcoursById(parcoursId);
+
+        File imageFile = new File(imageUrlParcoursPath + "" + parcours.getImageUrl());
+
+        if (!imageFile.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        String mimeType = Files.probeContentType(imageFile.toPath());
+        MediaType mediaType = MediaType.parseMediaType(mimeType);
+
+        byte[] imageBytes = Files.readAllBytes(imageFile.toPath());
+        return ResponseEntity.ok()
+                .contentType(mediaType)
+                .body(imageBytes);
     }
 
 }

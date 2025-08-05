@@ -8,7 +8,6 @@ import com.autodidacte.autodidacteback.exceptions.ProgrammeNotFoundException;
 import com.autodidacte.autodidacteback.mappers.DtoMapper;
 import com.autodidacte.autodidacteback.repositories.ProgrammeRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -90,7 +89,7 @@ public class ProgrammeServiceImpl implements ProgrammeService {
     @Override
     public ProgrammeDTO saveProgram(Programme programme) {
         log.info("Saving programme...");
-        programme.setId(UUID.randomUUID().toString());
+        programme.setProgId(UUID.randomUUID().toString());
         programme.setProgMatricule(matCounterService.generateMatricule("PRG"));
         return dtoMapper
                 .fromProgram(programmeRepository.save(programme));

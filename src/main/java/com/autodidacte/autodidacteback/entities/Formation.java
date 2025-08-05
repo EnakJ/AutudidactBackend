@@ -11,10 +11,10 @@ import java.util.List;
 @NoArgsConstructor @AllArgsConstructor
 public class Formation {
     @Id
-    private String id;
-    @Column(nullable = false, length = 150)
+    private String formId;
+    @Column(nullable = false, unique = true, length = 150)
     private String formIntitule;
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, unique = true, length = 50)
     private String formMatricule;
     @Column(length = 50)
     private Long formDuree;

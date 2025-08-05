@@ -12,6 +12,7 @@ public class ProgramParcoursDTO {
     private String progIntitule;
     private String progDescription;
     private String progObjectif;
+    private String imageUrl;
     private String progCertified;
     private String progDebut;
     private String progEtat;

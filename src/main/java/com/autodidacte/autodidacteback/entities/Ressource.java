@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor @AllArgsConstructor
 public class Ressource {
     @Id
-    private String id;
+    private String rscId;
     @Column(nullable = false)
     private String rscName;
-    @Column(length = 50, nullable = false)
+    @Column(length = 50, unique = true, nullable = false)
     private String rscMatricule;
     @Column(length = 50)
     private String rscType;

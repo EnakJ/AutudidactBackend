@@ -1,0 +1,74 @@
+            List<Programme> programmes = List.of(
+                    new Programme(
+                            UUID.randomUUID().toString(),
+                            "PROG2023001",
+                            "Développement Web Full Stack",
+                            "Apprenez à créer des sites web dynamiques avec HTML, CSS, JavaScript, Angular et Spring Boot.",
+                            "Permettre aux apprenants de concevoir des applications web complètes.",
+                            "fullstack.jpg",
+                            "Oui",
+                            new SimpleDateFormat("yyyy-MM-dd").parse("2023-10-01"),
+                            "Ouvert",
+                            "80%",
+                            "En cours",
+                            null
+                    ),
+                    new Programme(
+                            UUID.randomUUID().toString(),
+                            "PROG2023002",
+                            "Introduction à la Data Science",
+                            "Une initiation aux bases de la science des données avec Python, Pandas et Matplotlib.",
+                            "Former les bases nécessaires à une spécialisation en Data Science.",
+                            "datascience.jpg",
+                            "Oui",
+                            new SimpleDateFormat("yyyy-MM-dd").parse("2023-09-15"),
+                            "Ouvert",
+                            "100%",
+                            "Terminé",
+                            null
+                    ),
+                    new Programme(
+                            UUID.randomUUID().toString(),
+                            "PROG2023003",
+                            "Développement Mobile avec Flutter",
+                            "Créez des applications mobiles performantes avec Flutter et Dart.",
+                            "Donner les compétences pour développer des applications Android/iOS.",
+                            "flutter.jpg",
+                            "Non",
+                            new SimpleDateFormat("yyyy-MM-dd").parse("2024-01-10"),
+                            "Ouvert",
+                            "65%",
+                            "En cours",
+                            null
+                    ),
+                    new Programme(
+                            UUID.randomUUID().toString(),
+                            "PROG2023004",
+                            "Sécurité Informatique et Réseaux",
+                            "Comprendre les principes de base des réseaux et de la cybersécurité.",
+                            "Fournir les compétences nécessaires pour sécuriser un système informatique.",
+                            "cybersecurite.jpg",
+                            "Oui",
+                            new SimpleDateFormat("yyyy-MM-dd").parse("2024-02-01"),
+                            "Ouvert",
+                            "30%",
+                            "En cours",
+                            null
+                    ),
+                    new Programme(
+                            UUID.randomUUID().toString(),
+                            "PROG2023005",
+                            "Algorithmique et Structures de Données",
+                            "Maîtrisez les algorithmes fondamentaux et les structures de données en Java.",
+                            "Développer la capacité de résoudre efficacement des problèmes informatiques.",
+                            "algo.jpg",
+                            "Non",
+                            new SimpleDateFormat("yyyy-MM-dd").parse("2024-03-20"),
+                            "Fermé",
+                            "0%",
+                            "Non démarré",
+                            null
+                    )
+            );
+
+            programmeRepository.saveAll(programmes);

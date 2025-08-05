@@ -14,9 +14,10 @@ import java.util.List;
 @Data
 public class Programme {
     @Id
-    private String id;
-    @Column(nullable = false, length = 50)
+    private String progId;
+    @Column(nullable = false, unique = true, length = 50)
     private String progMatricule;
+    @Column(nullable = false, unique = true)
     private String progIntitule;
     private String progDescription;
     private String progObjectif;

@@ -1,7 +1,5 @@
 package com.autodidacte.autodidacteback;
 
-import com.autodidacte.autodidacteback.entities.Parcours;
-import com.autodidacte.autodidacteback.entities.Programme;
 import com.autodidacte.autodidacteback.repositories.ParcoursRepository;
 import com.autodidacte.autodidacteback.repositories.ProgrammeRepository;
 import com.autodidacte.autodidacteback.services.FormationService;
@@ -13,9 +11,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
 
 
 @SpringBootApplication
@@ -30,6 +25,8 @@ public class AutodidacteBackApplication {
     private ProgrammeRepository programmeRepository;
     @Autowired
     private ParcoursRepository parcoursRepository;
+@Autowired
+    private GlobalServices globalServices;
     public static void main(String[] args) {
         SpringApplication.run(AutodidacteBackApplication.class, args);
     }
@@ -38,8 +35,6 @@ public class AutodidacteBackApplication {
     CommandLineRunner start() {
         return args -> {
             System.out.println("STARTED !!!");
-
         };
     }
-
 }
